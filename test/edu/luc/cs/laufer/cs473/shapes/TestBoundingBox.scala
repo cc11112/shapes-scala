@@ -21,7 +21,7 @@ class TestBoundingBox extends FunSuite {
     }
   }
 
-// TODO comment these tests back in
+//TODO comment these tests back in
 
 //  testBoundingBox("simple ellipse", simpleEllipse, -50, -30, 100, 60)
   testBoundingBox("simple rectangle", simpleRectangle, 0, 0, 80, 120)
