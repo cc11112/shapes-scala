@@ -27,6 +27,6 @@ class TestBoundingBox extends FunSuite {
   testBoundingBox("simple rectangle", simpleRectangle, 0, 0, 80, 120)
   testBoundingBox("simple location", simpleLocation, 70, 30, 80, 120)
 //  testBoundingBox("basic group", basicGroup, -50, -30, 100, 70)
-//  testBoundingBox("simple group", simpleGroup, 150, 50, 350, 300)
-//  testBoundingBox("complex group", complexGroup, 30, 80, 470, 320)
+//  testBoundingBox("simple group", simpleGroup, 150, 70, 350, 280)
+//  testBoundingBox("complex group", complexGroup, 30, 60, 470, 320)
 }
