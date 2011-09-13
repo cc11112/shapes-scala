@@ -9,19 +9,18 @@ import TestFixtures._
 
 @RunWith(classOf[JUnitRunner])
 class TestSize extends FunSuite {
-	
- 	def testSizeOfShape(description: String, s: Shape, size: Int) = {
-	    test(description) {
-		  assert(size === sizeOf(s))
-	    }
-	  }
 
+  def testSizeOfShape(description: String, s: Shape, size: Int) = {
+    test(description) {
+      assert(size === countShapes(s))
+    }
+  }
 
-	  testSizeOfShape("simple ellipse", simpleEllipse, 6000)
-	  testSizeOfShape("simple rectangle", simpleRectangle, 9600)
-	  testSizeOfShape("simple location", simpleLocation, 9600)
-	 // testBoundingBox("basic group", basicGroup,  7000) 
-	 // testBoundingBox("simple group", simpleGroup,  350 * 280)
-	 // testBoundingBox("complex group", complexGroup,  470 * 320)
-	
+  testSizeOfShape("simple ellipse", simpleEllipse, 1)
+  testSizeOfShape("simple rectangle", simpleRectangle, 1)
+  testSizeOfShape("simple location", simpleLocation, 1)
+  testSizeOfShape("basic group", basicGroup, 2)
+  testSizeOfShape("simple group", simpleGroup, 2)
+  testSizeOfShape("complex group", complexGroup, 5)
+
 }
