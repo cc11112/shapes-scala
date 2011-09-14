@@ -62,26 +62,24 @@ object BoundingBox {
     new Location(x, y, new Rectangle(right - x, top - y))
 
   }
-  
-/*
-  def sizeOf(s: Shape): Int = {
-    val b = boundingBox(s).shape.asInstanceOf[Rectangle]
-    b.width * b.height
-  }
-*/
+
+  // implement size function here
   
   def countShapes(s: Shape): Int = s match {
     case Rectangle(_, _) => 1
+    
+    case Ellipse(_, _) => 1
 
     case Location(_, _, shape) => {
 
-      if (shape.isInstanceOf[Rectangle]
-        || shape.isInstanceOf[Ellipse]) 1
-      else if (shape.isInstanceOf[Group]) countArray(Array.apply(shape))
-      else 0
+      shape match {
+        case s: Rectangle => 1
+        case s: Ellipse => 1
+        case s: Group => countArray(Array.apply(s))
+        case _ => 0
+      }
+     
     }
-
-    case Ellipse(_, _) => 1
 
     case Group(shape) => {
       countArray(Array.apply(shape))
