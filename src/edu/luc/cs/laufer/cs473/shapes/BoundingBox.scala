@@ -12,13 +12,9 @@ object BoundingBox {
     }
 
     //TODO add missing cases (see test fixtures)
-    case Ellipse(x, y) => {
-      new Location(-x, -y, new Rectangle(2 * x, 2 * y))
-    }
+    case Ellipse(x, y) => new Location(-x, -y, new Rectangle(2 * x, 2 * y))
 
-    case Group(shapes @ _*) => {
-      Groups(shapes.toList)
-    }
+    case Group(shapes @ _*) => Groups(shapes.toList)
 
     case _ => error("Can not find such shape mapping")
   }
@@ -67,9 +63,7 @@ object BoundingBox {
       }
     }
 
-    case Group(shapes @ _*) => {
-      countShapes(shapes.toList)
-    }
+    case Group(shapes @ _*) => countShapes(shapes.toList)
 
     case _ => error("Can not find such shape mapping")
   }
