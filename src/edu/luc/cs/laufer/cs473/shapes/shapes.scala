@@ -10,14 +10,18 @@ case class Location(x: Int, y: Int, shape: Shape) extends Shape {
   }
 }
 
-//TODO add missing case classes (see test fixtures)
-//TODO must include validity checking for constructor arguments
+// TODO add missing case classes (see test fixtures)
+// TODO must include validity checking for constructor arguments
 case class Ellipse(x: Int, y: Int) extends Shape
 
 case class Group(shapes: Shape*) extends Shape {
+
   require(shapes != null)
   require(shapes.length > 0)
   for (shape <- shapes)
     require(shape != null)
+
+ // protected val items = shapes
+
 }
 

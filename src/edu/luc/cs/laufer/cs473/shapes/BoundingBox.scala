@@ -10,24 +10,16 @@ object BoundingBox {
       val b = boundingBox(shape)
       Location(x + b.x, y + b.y, b.shape)
     }
+    
     //TODO add missing cases (see test fixtures)
     case Ellipse(x, y) => {
       new Location(-x, -y, new Rectangle(2 * x, 2 * y))
     }
-/*
-    case Group(shapes: List[Shape]) => {
-    //case Group(shapes: Shape, _*) => {
-      Groups(shapes)
-    }
-*/
-    case Group(shape1: Shape, shape2: Shape) => {
-      Groups(shape1 :: (shape2 :: Nil))
-    }
 
-    case Group(shape1: Shape, shape2: Shape, shape3: Shape) => {
-      Groups(shape1 :: (shape2 :: (shape3 :: Nil)))
+    case Group(shapes @ _*) => {
+    	Groups(shapes.toList)
     }
-
+    
     case _ => error("Can not find such shape mapping")
   }
 
@@ -75,12 +67,8 @@ object BoundingBox {
       }
     }
 
-    case Group(shape1, shape2) => {
-      countShapes(shape1 :: (shape2 :: Nil))
-    }
-
-    case Group(shape1, shape2, shape3) => {
-      countShapes(shape1 :: (shape2 :: (shape3 :: Nil)))
+    case Group(shapes @ _*) => {
+      countShapes(shapes.toList)
     }
 
     case _ => error("Can not find such shape mapping")
