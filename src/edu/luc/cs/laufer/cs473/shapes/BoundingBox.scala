@@ -14,13 +14,13 @@ object BoundingBox {
     //TODO add missing cases (see test fixtures)
     case Ellipse(x, y) => new Location(-x, -y, new Rectangle(2 * x, 2 * y))
 
-    case Group(shapes @ _*) => Groups(shapes.toList)
+    case Group(shapes @ _*) => GroupLocation(shapes.toList)
 
     case _ => error("Can not find such shape mapping")
   }
 
   // must use map and reduceLeft (or foldLeft) for Group (no mutable variables!)
-  def Groups(shapes: List[Shape]): Location = {
+  def GroupLocation(shapes: List[Shape]): Location = {
 
     val locations = shapes.map(boundingBox(_));
 
