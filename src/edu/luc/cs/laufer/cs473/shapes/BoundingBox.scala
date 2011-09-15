@@ -14,30 +14,25 @@ object BoundingBox {
     case Ellipse(x, y) => {
       new Location(-x, -y, new Rectangle(2 * x, 2 * y))
     }
-
-    /*
-    case Group(shapes : Shape, _*)  => {
-      
-      val array = Array.apply(shapes)
-      
-      Groups(array)
+/*
+    case Group(shapes: List[Shape]) => {
+    //case Group(shapes: Shape, _*) => {
+      Groups(shapes)
     }
-    */
-
+*/
     case Group(shape1: Shape, shape2: Shape) => {
-
-      Groups(Array.apply(shape1, shape2))
+      Groups(shape1 :: (shape2 :: Nil))
     }
 
     case Group(shape1: Shape, shape2: Shape, shape3: Shape) => {
-      Groups(Array.apply(shape1, shape2, shape3))
+      Groups(shape1 :: (shape2 :: (shape3 :: Nil)))
     }
 
     case _ => error("Can not find such shape mapping")
   }
 
   // must use map and reduceLeft (or foldLeft) for Group (no mutable variables!)
-  def Groups(shapes: Array[Shape]): Location = {
+  def Groups(shapes: List[Shape]): Location = {
 
     val locations = shapes.map(boundingBox(_));
 
@@ -64,10 +59,10 @@ object BoundingBox {
   }
 
   // implement size function here
-  
-  def countShapes(s: Shape): Int = s match {
+
+  def sizeOf(s: Shape): Int = s match {
     case Rectangle(_, _) => 1
-    
+
     case Ellipse(_, _) => 1
 
     case Location(_, _, shape) => {
@@ -75,28 +70,23 @@ object BoundingBox {
       shape match {
         case s: Rectangle => 1
         case s: Ellipse => 1
-        case s: Group => countArray(Array.apply(s))
+        case s: Group => countShapes(shape :: Nil)
         case _ => 0
       }
-     
-    }
-
-    case Group(shape) => {
-      countArray(Array.apply(shape))
     }
 
     case Group(shape1, shape2) => {
-      countArray(Array.apply(shape1, shape2))
+      countShapes(shape1 :: (shape2 :: Nil))
     }
 
     case Group(shape1, shape2, shape3) => {
-      countArray(Array.apply(shape1, shape2, shape3))
+      countShapes(shape1 :: (shape2 :: (shape3 :: Nil)))
     }
 
     case _ => error("Can not find such shape mapping")
   }
 
-  def countArray(shapes: Array[Shape]): Int = {
-    shapes.map(countShapes(_)).foldLeft(0)(_ + _)
+  def countShapes(shapes: List[Shape]): Int = {
+    shapes.map(sizeOf(_)).foldLeft(0)(_ + _)
   }
 }

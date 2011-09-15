@@ -10,9 +10,9 @@ import TestFixtures._
 @RunWith(classOf[JUnitRunner])
 class TestSize extends FunSuite {
 
-  def testSizeOfShape(description: String, s: Shape, size: Int) = {
+  def testSizeOfShape(description: String, s: Shape, count: Int) = {
     test(description) {
-      assert(size === countShapes(s))
+      assert(count === sizeOf(s))
     }
   }
 
