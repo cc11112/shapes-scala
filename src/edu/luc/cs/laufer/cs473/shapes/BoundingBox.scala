@@ -24,7 +24,9 @@ object BoundingBox {
     
     //TODO: 
     // How to improve this code?
-    // use flatMap ? 
+    // use flatMap, such as map to List(x, x+width), List(y, y+height))
+    // then we can use reduceLeft to get max/min value
+    //
     
     val locations = shapes.map(boundingBox(_))
 
