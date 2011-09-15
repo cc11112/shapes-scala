@@ -10,16 +10,16 @@ object BoundingBox {
       val b = boundingBox(shape)
       Location(x + b.x, y + b.y, b.shape)
     }
-    
+
     //TODO add missing cases (see test fixtures)
     case Ellipse(x, y) => {
       new Location(-x, -y, new Rectangle(2 * x, 2 * y))
     }
 
     case Group(shapes @ _*) => {
-    	Groups(shapes.toList)
+      Groups(shapes.toList)
     }
-    
+
     case _ => error("Can not find such shape mapping")
   }
 
