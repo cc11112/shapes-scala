@@ -21,28 +21,26 @@ object BoundingBox {
 
   // must use map and reduceLeft (or foldLeft) for Group (no mutable variables!)
   def GroupLocation(shapes: List[Shape]): Location = {
-     
-    val locations = shapes.map(boundingBox(_));
+    
+    //TODO: 
+    // How to improve this code?
+    // use flatMap ? 
+    
+    val locations = shapes.map(boundingBox(_))
 
-    val x = locations.reduceLeft(
-      (a, b) => if (a.x < b.x) a else b).x
+    val x = locations.map(s => s.x)
+      .reduceLeft((a, b) => if (a < b) a else b)
 
-    val y = locations.reduceLeft(
-      (a, b) => if (a.y < b.y) a else b).y
+    val y = locations.map(s => s.y)
+      .reduceLeft((a, b) => if (a < b) a else b)
 
-    val a = locations.reduceLeft(
-      (a, b) => if (a.x + a.shape.asInstanceOf[Rectangle].width
-        > b.x + b.shape.asInstanceOf[Rectangle].width) a else b)
+    val width = locations.map(s => s.x + s.shape.asInstanceOf[Rectangle].width)
+      .reduceLeft((a, b) => if (a > b) a else b) - x
 
-    val right = a.x + a.shape.asInstanceOf[Rectangle].width
+    val height = locations.map(s => s.y + s.shape.asInstanceOf[Rectangle].height)
+      .reduceLeft((a, b) => if (a > b) a else b) - y
 
-    val b = locations.reduceLeft(
-      (a, b) => if (a.y + a.shape.asInstanceOf[Rectangle].height
-        > b.y + b.shape.asInstanceOf[Rectangle].height) a else b)
-
-    val top = b.y + b.shape.asInstanceOf[Rectangle].height
-
-    new Location(x, y, new Rectangle(right - x, top - y))
+    new Location(x, y, new Rectangle(width, height))
 
   }
 
