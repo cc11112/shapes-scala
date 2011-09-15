@@ -21,7 +21,7 @@ object BoundingBox {
 
   // must use map and reduceLeft (or foldLeft) for Group (no mutable variables!)
   def GroupLocation(shapes: List[Shape]): Location = {
-
+     
     val locations = shapes.map(boundingBox(_));
 
     val x = locations.reduceLeft(
@@ -53,22 +53,11 @@ object BoundingBox {
 
     case Ellipse(_, _) => 1
 
-    case Location(_, _, shape) => {
-
-      shape match {
-        case s: Rectangle => 1
-        case s: Ellipse => 1
-        case s: Group => countShapes(shape :: Nil)
-        case _ => 0
-      }
-    }
-
-    case Group(shapes @ _*) => countShapes(shapes.toList)
+    case Location(_, _, shape) => sizeOf(shape)
+      
+    case Group(shapes @ _*) => shapes.map(sizeOf(_)).foldLeft(0)(_ + _)
 
     case _ => error("Can not find such shape mapping")
   }
-
-  def countShapes(shapes: List[Shape]): Int = {
-    shapes.map(sizeOf(_)).foldLeft(0)(_ + _)
-  }
+  
 }
