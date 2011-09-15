@@ -14,36 +14,48 @@ object BoundingBox {
     //TODO add missing cases (see test fixtures)
     case Ellipse(x, y) => new Location(-x, -y, new Rectangle(2 * x, 2 * y))
 
-    case Group(shapes @ _*) => GroupLocation(shapes.toList)
+    // must use map and reduceLeft (or foldLeft) for Group (no mutable variables!)
+    case Group(shapes @ _*) => {
+
+      // use flatMap, such as map to List(x, x+width), List(y, y+height))
+      // then we can use reduceLeft to get max/min value
+      //
+
+      val x: List[Int] = shapes.map(boundingBox(_)).map(
+        s => List(s.x, s.x + s.shape.asInstanceOf[Rectangle].width))
+        .flatMap(x => x).toList.sort(_ < _)
+
+      val y: List[Int] = shapes.map(boundingBox(_)).map(
+        s => List(s.y, s.y + s.shape.asInstanceOf[Rectangle].height))
+        .flatMap(y => y).toList.sort(_ < _)
+
+      new Location(
+        x.head,
+        y.head,
+        new Rectangle(
+          x.reduceLeft((a, b) => if (a > b) a else b) - x.head,
+          y.reduceLeft((a, b) => if (a > b) a else b) - y.head))
+
+      //        
+      //    val locations = shapes.map(boundingBox(_))
+      //
+      //    val x = locations.map(s => s.x)
+      //      .reduceLeft((a, b) => if (a < b) a else b)
+      //
+      //    val y = locations.map(s => s.y)
+      //      .reduceLeft((a, b) => if (a < b) a else b)
+      //
+      //    val width = locations.map(s => s.x + s.shape.asInstanceOf[Rectangle].width)
+      //      .reduceLeft((a, b) => if (a > b) a else b) - x
+      //
+      //    val height = locations.map(s => s.y + s.shape.asInstanceOf[Rectangle].height)
+      //      .reduceLeft((a, b) => if (a > b) a else b) - y
+      //
+      //    new Location(x, y, new Rectangle(width, height))
+      //
+    }
 
     case _ => error("Can not find such shape mapping")
-  }
-
-  // must use map and reduceLeft (or foldLeft) for Group (no mutable variables!)
-  def GroupLocation(shapes: List[Shape]): Location = {
-
-    //TODO: 
-    // How to improve this code?
-    // use flatMap, such as map to List(x, x+width), List(y, y+height))
-    // then we can use reduceLeft to get max/min value
-    //
-
-    val locations = shapes.map(boundingBox(_))
-
-    val x = locations.map(s => s.x)
-      .reduceLeft((a, b) => if (a < b) a else b)
-
-    val y = locations.map(s => s.y)
-      .reduceLeft((a, b) => if (a < b) a else b)
-
-    val width = locations.map(s => s.x + s.shape.asInstanceOf[Rectangle].width)
-      .reduceLeft((a, b) => if (a > b) a else b) - x
-
-    val height = locations.map(s => s.y + s.shape.asInstanceOf[Rectangle].height)
-      .reduceLeft((a, b) => if (a > b) a else b) - y
-
-    new Location(x, y, new Rectangle(width, height))
-
   }
 
   // implement size function here
