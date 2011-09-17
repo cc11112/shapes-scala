@@ -18,7 +18,7 @@ object BoundingBox {
     case Group(shapes @ _*) => {
 
       // use flatMap, such as map to List(x, x+width), List(y, y+height))
-      // then we can use reduceLeft to get max/min value
+      // then we can use first/last to get max/min
       //
 
       val x: List[Int] = shapes.map(boundingBox(_)).map(
@@ -30,11 +30,11 @@ object BoundingBox {
         .flatMap(y => y).toList.sort(_ < _)
 
       new Location(
-        x.head,
-        y.head,
+        x.first,
+        y.first,
         new Rectangle(
-          x.reduceLeft((a, b) => if (a > b) a else b) - x.head,
-          y.reduceLeft((a, b) => if (a > b) a else b) - y.head))
+          x.last - x.first,
+          y.last - y.first))
 
       //        
       //    val locations = shapes.map(boundingBox(_))
