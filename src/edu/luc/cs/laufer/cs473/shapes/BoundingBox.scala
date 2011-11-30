@@ -23,18 +23,18 @@ object BoundingBox {
 
       val x: List[Int] = shapes.map(boundingBox(_)).map(
         s => List(s.x, s.x + s.shape.asInstanceOf[Rectangle].width))
-        .flatMap(x => x).toList.sort(_ < _)
+        .flatMap(x => x).toList.sortWith( _ < _)
 
       val y: List[Int] = shapes.map(boundingBox(_)).map(
         s => List(s.y, s.y + s.shape.asInstanceOf[Rectangle].height))
-        .flatMap(y => y).toList.sort(_ < _)
+        .flatMap(y => y).toList.sortWith(_ < _)
 
       new Location(
-        x.first,
-        y.first,
+        x.head,
+        y.head,
         new Rectangle(
-          x.last - x.first,
-          y.last - y.first))
+          x.last - x.head,
+          y.last - y.head))
 
       //        
       //    val locations = shapes.map(boundingBox(_))
@@ -55,7 +55,7 @@ object BoundingBox {
       //
     }
 
-    case _ => error("Can not find such shape mapping")
+    case _ => sys.error("Can not find such shape mapping")
   }
 
   // implement size function here
@@ -69,7 +69,7 @@ object BoundingBox {
 
     case Group(shapes @ _*) => shapes.map(sizeOf(_)).foldLeft(0)(_ + _)
 
-    case _ => error("Can not find such shape mapping")
+    case _ => sys.error("Can not find such shape mapping")
   }
 
 }

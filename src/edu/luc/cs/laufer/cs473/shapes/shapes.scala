@@ -27,3 +27,4 @@ case class Group(shapes: Shape*) extends Shape {
     require(shape != null)
 }
 
+case class Polygon(shape: Shape*) extends Shape
